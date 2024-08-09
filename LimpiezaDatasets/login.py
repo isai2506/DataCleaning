@@ -13,7 +13,7 @@ def validarUsuario(usuario,clave):
     Returns:
         bool: True usuario valido, False usuario invalido
     """    
-    dfusuarios = pd.read_csv('usuarios.csv')
+    dfusuarios = pd.read_csv('LimpiezaDatasets/usuarios.csv')
     if len(dfusuarios[(dfusuarios['usuario']==usuario) & (dfusuarios['clave']==clave)])>0:
         return True
     else:
@@ -21,7 +21,7 @@ def validarUsuario(usuario,clave):
 
 def generarMenu(usuario):
     with st.sidebar:
-        dfusuarios = pd.read_csv('usuarios.csv')
+        dfusuarios = pd.read_csv('LimpiezaDatasets/usuarios.csv')
         nombre = dfusuarios[dfusuarios['usuario'] == usuario]['nombre'].values[0]
         st.write(f"Hola **:blue-background[{nombre}]**")
         st.page_link("inicio.py", label="Inicio", icon=":material/home:")

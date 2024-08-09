@@ -4,7 +4,10 @@ import pandas as pd
 
 login.generarLogin()
 if 'usuario' in st.session_state:
-    st.title('Limpieza KELQ')
+    st.error("Por favor, inicia sesión para acceder a esta página.")
+    st.stop()
+
+st.title('Limpieza KELQ')
 
 def clean_dataset_kelq(file_path, skiprows=14):
     # Leer el archivo

@@ -4,7 +4,10 @@ import pandas as pd
 
 login.generarLogin()
 if 'usuario' in st.session_state:
-    st.title('Limpieza AES')
+    st.error("Por favor, inicia sesión para acceder a esta página.")
+    st.stop()
+
+st.title('Limpieza AES')
 
 def LimpiezaAes(file):
   # Leer archivo en formato csv y saltar las primeras 13 filas

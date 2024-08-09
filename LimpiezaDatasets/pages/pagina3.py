@@ -3,8 +3,11 @@ import login
 import pandas as pd
 
 login.generarLogin()
-if 'usuario' in st.session_state:
-    st.title('Limpieza FTV')
+if 'usuario' not in st.session_state:
+    st.error("Por favor, inicia sesión para acceder a esta página.")
+    st.stop()
+
+st.title('Limpieza FTV')
 
 def LimpiezaFTV(file):
   # Leer archivo

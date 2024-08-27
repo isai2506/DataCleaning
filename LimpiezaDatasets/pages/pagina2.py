@@ -37,12 +37,13 @@ def LimpiezaAes(file):
   # Eliminamos las filas que tienen al menos el 30% de las celdas vacías
   df = df.dropna(thresh=umbral)
 
-  for col in ['FECHA INICIO CREDITO', 'FECHA ULTIMO PAGO']:
-    df['FECHA INICIO CREDITO'] = pd.to_datetime(df['FECHA INICIO CREDITO']).dt.date
-    df['FECHA ULTIMO PAGO'] = pd.to_datetime(df['FECHA ULTIMO PAGO']).dt.date
+  df = df.drop(columns=['Unnamed: 2',	'Unnamed: 3'])
+  mask = (df == df.columns).all(axis=1)
 
+  # Filtramos las filas que no coinciden
+  df = df[~mask]
+  
   return df
-
 
 def main():
     st.write('Sube un archivo .xls para limpiarlo')

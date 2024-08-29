@@ -7,64 +7,27 @@ if 'usuario' not in st.session_state:
     st.error("Por favor, inicia sesión para acceder a esta página.")
     st.stop()
 
-st.title('Limpieza KELQ')
+st.title('Limpieza KELQ por Patron')
 
-def clean_dataset_kelq(file_path, skiprows=14):
-    # Leer el archivo
-    df = pd.read_excel(file_path, skiprows=skiprows, dtype={'# CLT': str})
+def clean_dataset_kelq_patron(file_path, skiprows=17):
+  # Leer el archivo
+  x = pd.read_excel(file_path)
 
-    # Eliminar filas y columnas con datos vacíos. Eliminar las columnas 'FECHA DE BAJA' y 'BAJA'
-    df = df.drop(columns=['FECHA DE BAJA', 'BAJA'])
-    df = df.dropna(axis=1, how='all')
-    df = df.dropna(axis=0, how='all')
-    
-    # Eliminar filas con más del 50% de datos vacíos
-    threshold = 0.5 * len(df.columns)
-    df = df.dropna(thresh=threshold, axis=0)
-    
-    # Eliminar columnas con más del 50% de datos vacíos
-    threshold = 0.5 * len(df)
-    df = df.dropna(thresh=threshold, axis=1)
-    
-    # Eliminar filas con al menos un dato vacío 
-    df = df.dropna(axis=0, how='any')
-    
-    # Eliminar filas con los mismos datos del nombre de las columnas
-    header = df.columns.tolist()
-    rows_to_drop = df.index[df.apply(lambda x: all(x == header), axis=1)]
-    df = df.drop(rows_to_drop)
-    
-    # Asignación de tipo de variable
-    df = df.astype({
-            '# CLT': 'string',
-            'NOMBRE CLIENTE': 'string',
-            'CREDITO': 'int',
-            'PERIODICIDAD': 'string',
-            'CAPITAL OTORGADO': 'float',
-            'TASA INTERES': 'float',
-            'PLAZO': 'int',
-            'MONTO TABLA CAPITAL': 'float',
-            'MONTO TABLA INTERES': 'float',
-            'PAGO CAPITAL': 'float',
-            'PAGO INTERES': 'float',
-            'VENCIDO CAPITAL': 'float',
-            'VENCIDO INTERES': 'float',
-            'DIAS ATRASO': 'int',
-            'PAGOS REALIZADOS': 'int',
-            'PAGOS RESTANTES': 'int',
-            'MONTO TABLA CAPITAL FINAL': 'float',
-            'MONTO TABLA INTERES FINAL': 'float'
-        })
-    
-    # Eliminar los datos de hora de las columnas de fecha
-    for col in ['FECHA INICIO CREDITO', 'FECHA ULTIMO PAGO']:
-        df['FECHA INICIO CREDITO'] = pd.to_datetime(df['FECHA INICIO CREDITO']).dt.date
-        df['FECHA ULTIMO PAGO'] = pd.to_datetime(df['FECHA ULTIMO PAGO']).dt.date
+  columns = ['# PAT', 'x', '# CLT',
+          'NOMBRE CLIENTE', 'CREDITO', 'FECHA INICIO CREDITO', 'PERIODICIDAD',
+          'CAPITAL OTORGADO', 'TASA INTERES', 'PLAZO', ' MONTO TABLA CAPITAL', 'MONTO TABLA INTERES',
+          'FECHA ULTIMO PAGO', 'PAGO CAPITAL', 'PAGO INTERES', 'VENCIDO CAPITAL', 'VENCIDO INTERES', 
+          'DIAS ATRASO', 'PAGOS REALIZADOS', 'PAGOS RESTANTES',
+          'MONTO TABLA CAPITAL FINAL', 'MONTO TABLA INTERES FINAL']
 
-    # Acomodar los datos de forma descendente
-    df = df.sort_values(by='# CLT', ascending=True)
+  x.columns = columns
 
-    return df
+  threshold = 0.8 * x.shape[1]
+
+  # Eliminar filas que tienen el 80% o más de sus valores vacíos
+  df_cleaned = x.dropna(thresh=threshold)
+
+  return df_cleaned
 
 
 def main():

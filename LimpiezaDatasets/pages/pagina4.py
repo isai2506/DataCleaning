@@ -37,7 +37,7 @@ def main():
 
     if uploaded_file is not None:
         # Limpieza del dataset
-        cleaned_df = clean_dataset_kelq(uploaded_file)
+        cleaned_df = clean_dataset_kelq_patron(uploaded_file)
 
         # Mostrar el dataframe limpio
         st.write('Dataset Limpio:')

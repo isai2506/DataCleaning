@@ -46,7 +46,7 @@ def main():
         # Descargar el archivo limpio
         st.download_button(label="Descargar Dataset Limpio",
                           data=cleaned_df.to_csv(index=False).encode('utf-8'),
-                          file_name="dataset_limpio_kelq.csv",
+                          file_name="dataset_limpio_kelq_patron.csv",
                           mime='text/csv')
 
 if __name__ == "__main__":
